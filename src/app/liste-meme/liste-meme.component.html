@@ -1,0 +1,192 @@
+<br>
+<button mat-Suffix mat-raised-button color="primary"  (click)="getMemes()">All meme</button>
+<button mat-Suffix mat-raised-button color="primary"  (click)="getFavoriteMeme()">Favorie</button>
+
+
+<div class="carteGrid">
+<mat-card class="example-card" *ngFor="let meme of listeMemes" (click)="editMeme(meme)" >
+  <div class="meme">
+    <mat-card-header>
+      <mat-card-title>{{meme.nom}}</mat-card-title>
+      
+    </mat-card-header>
+    <img mat-card-image src={{meme.image}}>
+    <mat-card-content>
+        <p>Année de cration: {{meme.annee_de_creation}}</p>
+        <p>Nombre de click: {{meme.nombre_de_click}}</p>
+        <div *ngIf="meme.favorie; else elseBlock">Favorie</div>
+        <ng-template #elseBlock>Pas un favorie</ng-template>
+        <p>Tags: {{meme.tags}}</p>
+        
+        <p>Template:</p> 
+        <img mat-card-image src={{meme.template}}>
+        <p>Like: {{meme.like}}</p>
+        <p>Dislike: {{meme.dislike}}</p>
+        <p>Thème: {{meme.theme}}</p>
+    </mat-card-content> 
+    
+  </div>
+</mat-card>
+
+<div *ngIf="editing; else elseBlock">
+<mat-card class="example-card">
+  <div class="meme">
+    <mat-card-header>
+      <mat-card-title>Update</mat-card-title>
+      
+    </mat-card-header>
+    
+    <mat-card-content>
+       <div class="example-container">
+        <form #editMemeForm="ngForm" id="editMemeForm" (ngSubmit)="edit(editMemeForm)">
+          <mat-form-field appearance="fill">
+            <mat-label>Id</mat-label>
+            <input name="id" matInput disabled type="text" [(ngModel)]="memeSelect[0]._id"  >
+          </mat-form-field> <br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Nom</mat-label>
+            <input name="nom" matInput  type="text" [(ngModel)]="memeSelect[0].nom"  >
+          </mat-form-field> <br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Année de création</mat-label>
+            <input name="annee_de_creation" matInput [matDatepicker]="picker" [(ngModel)]="memeSelect[0].annee_de_creation"  >
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field> <br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Click</mat-label>
+            <input name="nombre_de_click" matInput  type="number" [(ngModel)]="memeSelect[0].nombre_de_click"  >
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Favorie</mat-label>
+            <mat-select [(value)]="memeSelect[0].favorie">
+              <mat-option value="true">Favorie</mat-option>
+              <mat-option value="false">Pas favorie</mat-option>
+            </mat-select>
+          </mat-form-field><br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Tags (separer par une virgule)</mat-label>
+            <input name="tags" matInput  type="text" [(ngModel)]="memeSelect[0].tags"  >
+          </mat-form-field><br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Image URL</mat-label>
+            <input name="image" matInput  type="text" [(ngModel)]="memeSelect[0].image"  >
+          </mat-form-field><br>
+          
+          <mat-form-field appearance="fill">
+            <mat-label>Template URL</mat-label>
+            <input name="template" matInput  type="text" [(ngModel)]="memeSelect[0].template" >
+          </mat-form-field><br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Like</mat-label>
+            <input name="like" matInput  type="number" [(ngModel)]="memeSelect[0].like"  >
+          </mat-form-field><br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Dislike</mat-label>
+            <input name="dislike" matInput  type="number" [(ngModel)]="memeSelect[0].dislike"  >
+          </mat-form-field><br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Thème</mat-label>
+            <input name="theme" matInput  type="text" [(ngModel)]="memeSelect[0].theme" >
+          </mat-form-field>
+
+         <br>
+          <button mat-Suffix mat-raised-button color="primary" type="submit"  [disabled]="!editMemeForm.form.valid">Update</button>
+          <button mat-Suffix mat-raised-button color="primary"  (click)="editMemeForm.resetForm()">Clear</button>
+
+          <button mat-Suffix mat-raised-button color="primary"  (click)="delete(memeSelect[0])">Delete</button>
+        </form>
+    </div>
+    </mat-card-content> 
+  </div>
+  </mat-card>
+</div>
+<ng-template #elseBlock>
+  <mat-card class="example-card">
+    <div class="meme">
+      <mat-card-header>
+        <mat-card-title>Ajout</mat-card-title>
+        
+      </mat-card-header>
+      
+      <mat-card-content>
+         <div class="example-container">
+          <form #addMemeForm="ngForm" id="addMemeForm" (ngSubmit)="add(addMemeForm)">
+            <mat-form-field appearance="fill">
+              <mat-label>Nom</mat-label>
+              <input name="nom" matInput  type="text" [(ngModel)]="newMeme.nom"  >
+            </mat-form-field> <br>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Année de création</mat-label>
+              <input name="annee_de_creation" matInput [matDatepicker]="picker" [(ngModel)]="newMeme.annee_de_creation"  >
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field> <br>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Click</mat-label>
+              <input name="nombre_de_click" matInput  type="number" [(ngModel)]="newMeme.nombre_de_click"  >
+            </mat-form-field>
+            <br>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Favorie</mat-label>
+              <mat-select [(value)]="newMeme.favorie">
+                <mat-option value="true">Favorie</mat-option>
+                <mat-option value="false">Pas favorie</mat-option>
+              </mat-select>
+            </mat-form-field><br>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Tags (separer par une virgule)</mat-label>
+              <input name="tags" matInput  type="text" [(ngModel)]="newMeme.tags"  >
+            </mat-form-field><br>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Image URL</mat-label>
+              <input name="image" matInput  type="text" [(ngModel)]="newMeme.image"  >
+            </mat-form-field><br>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Template URL</mat-label>
+              <input name="template" matInput  type="text" [(ngModel)]="newMeme.template" >
+            </mat-form-field><br>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Like</mat-label>
+              <input name="like" matInput  type="number" [(ngModel)]="newMeme.like"  >
+            </mat-form-field><br>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Dislike</mat-label>
+              <input name="dislike" matInput  type="number" [(ngModel)]="newMeme.dislike"  >
+            </mat-form-field><br>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Thème</mat-label>
+              <input name="theme" matInput  type="text" [(ngModel)]="newMeme.theme" >
+            </mat-form-field>
+  
+          
+         <br>
+          <button mat-Suffix mat-raised-button color="primary" type="submit"  [disabled]="!addMemeForm.form.valid">Ajouter</button>
+          <button mat-Suffix mat-raised-button color="primary"  (click)="addMemeForm.resetForm()">Clear</button>
+
+        </form>
+      </div>
+      </mat-card-content> 
+    </div>
+    </mat-card>
+</ng-template>
+</div>

@@ -1,0 +1,10 @@
+.example-card {
+    max-width: 400px;
+    margin-bottom: 15px;
+  }
+  .carteGrid {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+  }

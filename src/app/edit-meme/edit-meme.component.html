@@ -1,0 +1,10 @@
+<div class="example-container">
+    <form #editMemeForm="ngForm" id="editMemeForm" (ngSubmit)="edit(editMemeForm)">
+      <mat-form-field appearance="fill">
+        <mat-label>Nom</mat-label>
+        <input name="nom" matInput [(ngModel)]="meme.nom" >
+
+      </mat-form-field> 
+     
+    </form>
+</div>
